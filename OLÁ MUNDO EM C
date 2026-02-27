@@ -1,5 +1,9 @@
-#include <stdio.h>
+#include <stdio.h> //INLUI A BIBLIOTECA PADRÃO DO C DE ENTRADA E SAIDA
+
+
 //ESSE PROGAMA EXIBIRÁ A FRASE "OLÁ, MUNDO" NA TELA USANDO PRINTF
+
+
 int main() {
     printf("OLÁ, MUNDO\n");
     return 0;
