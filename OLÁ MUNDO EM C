@@ -1,0 +1,6 @@
+#include <stdio.h>
+//ESSE PROGAMA EXIBIRÁ A FRASE "OLÁ, MUNDO" NA TELA USANDO PRINTF
+int main() {
+    printf("OLÁ, MUNDO\n");
+    return 0;
+}
