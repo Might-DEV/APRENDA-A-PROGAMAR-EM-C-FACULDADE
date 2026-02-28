@@ -1,0 +1,110 @@
+//ESSE PROGAMA CADASTRAR ID NOME E NOTA DOS ALUNOS E SALVA E VC PODE PESQUISAR  TIPO BIBLIOTECA
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
+
+// Definição da estrutura dos alunos
+typedef struct {
+    int id;
+    char nome[50];
+    float nota;
+} Aluno;
+
+
+void cadastrarAluno();
+void listarAlunos();
+void pesquisarAluno();
+
+const char* ARQUIVO = "alunos.dat";
+
+int main() {
+    setlocale(LC_ALL, "portuguese");
+    int opcao;
+
+    do {
+        printf("\n--- SISTEMA DE GERENCIAMENTO ESCOLAR ---\n");
+        printf("\n1. Cadastrar Aluno");
+        printf("\n2. Listar Todos os Alunos");
+        printf("\n3. Pesquisar Aluno por ID");
+        printf("\n0. Sair\n");
+        printf("\nEscolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); 
+
+        switch(opcao) {
+            case 1: cadastrarAluno(); break;
+            case 2: listarAlunos(); break;
+            case 3: pesquisarAluno(); break;
+            case 0: printf("Saindo...\n"); break;
+            default: printf("Opção inválida!\n");
+        }
+    } while(opcao != 0);
+
+    return 0;
+}
+
+void cadastrarAluno() {
+    FILE *file = fopen(ARQUIVO, "ab"); 
+    if (file == NULL) {
+        printf("Erro ao abrir arquivo!\n");
+        return;
+    }
+
+    Aluno a;
+    printf("\nID do Aluno: ");
+    scanf("%d", &a.id);
+    getchar();
+    printf("Nome: ");
+    fgets(a.nome, 50, stdin);
+    a.nome[strcspn(a.nome, "\n")] = 0; 
+    printf("Nota: ");
+    scanf("%f", &a.nota);
+
+    fwrite(&a, sizeof(Aluno), 1, file);
+    fclose(file);
+    printf("\nAluno cadastrado com sucesso!");
+}
+
+void listarAlunos() {
+    FILE *file = fopen(ARQUIVO, "rb"); 
+    if (file == NULL) {
+        printf("\nNenhum registro encontrado.");
+        return;
+    }
+
+    Aluno a;
+    printf("\n--- LISTAGEM DE ALUNOS ---");
+    printf("\nID\t%-20s\tNOTA", "NOME");
+    printf("\n-----------------------------------------");
+    
+    while(fread(&a, sizeof(Aluno), 1, file)) {
+        printf("\n%d\t%-20s\t%.2f", a.id, a.nome, a.nota);
+    }
+    printf("\n-----------------------------------------");
+    fclose(file);
+}
+
+void pesquisarAluno() {
+    FILE *file = fopen(ARQUIVO, "rb");
+    if (file == NULL) return;
+
+    int idBusca, encontrado = 0;
+    Aluno a;
+
+    printf("\nDigite o ID para pesquisa: ");
+    scanf("%d", &idBusca);
+
+    while(fread(&a, sizeof(Aluno), 1, file)) {
+        if(a.id == idBusca) {
+            printf("\nAluno Encontrado:");
+            printf("\nID: %d | Nome: %s | Nota: %.2f\n", a.id, a.nome, a.nota);
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if(!encontrado) printf("\nAluno com ID %d não encontrado.", idBusca);
+    fclose(file);
+}
