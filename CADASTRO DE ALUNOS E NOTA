@@ -1,0 +1,46 @@
+/*ESSE PROGAMA CADASTRAR ALUNOS E SUAS NOTAS E 
+EXIBI ELAS EM SEGUIDA*/
+
+#include <stdio.h>
+#include <stdlib.h> 
+#include <locale.h>
+
+typedef struct {
+    char nome[30];
+    float nota;
+} Aluno;
+
+int main() {
+    setlocale(LC_ALL, "portuguese");
+
+    int mx_alunos = 0;
+
+    printf("QUANTOS ALUNOS DESEJA CADASTRAR?: ");
+    scanf("%d", &mx_alunos);
+    getchar(); 
+    
+	Aluno *alunos = (Aluno *) malloc(mx_alunos * sizeof(Aluno));
+
+    if (alunos == NULL) {
+        printf("Erro de memória!\n");
+        return 1;
+    }
+
+    for (int i = 0; i < mx_alunos; i++) {
+        printf("\nDIGITE O NOME DO %dº ALUNO: ", i + 1);
+        fgets(alunos[i].nome, 30, stdin);
+        
+        printf("DIGITE A NOTA DO %dº ALUNO: ", i + 1);
+        scanf("%f", &alunos[i].nota);
+        getchar(); // Limpa o buffer novamente
+    }
+
+    printf("\n--- LISTA DE ALUNOS ---");
+    for (int i = 0; i < mx_alunos; i++) {
+        printf("\nNOME: %s", alunos[i].nome);
+        printf("NOTA: %.2f\n", alunos[i].nota);
+    }
+
+    free(alunos); 
+    return 0;
+}
