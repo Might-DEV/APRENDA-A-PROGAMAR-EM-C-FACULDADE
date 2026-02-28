@@ -1,5 +1,4 @@
-/*ESSE PROGAMA CADASTRAR ALUNOS E SUAS NOTAS E 
-EXIBI ELAS EM SEGUIDA*/
+// ESTE PROGAMA CADASTRAR ALUNOS E SUAS DEVIDAS NOTAS E MOSTRA A MEDIA
 
 #include <stdio.h>
 #include <stdlib.h> 
@@ -14,12 +13,13 @@ int main() {
     setlocale(LC_ALL, "portuguese");
 
     int mx_alunos = 0;
-
+    float soma = 0;
+    
     printf("QUANTOS ALUNOS DESEJA CADASTRAR?: ");
     scanf("%d", &mx_alunos);
     getchar(); 
     
-	Aluno *alunos = (Aluno *) malloc(mx_alunos * sizeof(Aluno));
+    Aluno *alunos = (Aluno *) malloc(mx_alunos * sizeof(Aluno));
 
     if (alunos == NULL) {
         printf("Erro de memória!\n");
@@ -30,17 +30,24 @@ int main() {
         printf("\nDIGITE O NOME DO %dº ALUNO: ", i + 1);
         fgets(alunos[i].nome, 30, stdin);
         
-        printf("DIGITE A NOTA DO %dº ALUNO: ", i + 1);
+        printf("DIGITE A NOTA DO %dº ALUNO DE 0 A 10: ", i + 1);
         scanf("%f", &alunos[i].nota);
-        getchar(); // Limpa o buffer novamente
+        getchar(); 
     }
 
     printf("\n--- LISTA DE ALUNOS ---");
     for (int i = 0; i < mx_alunos; i++) {
         printf("\nNOME: %s", alunos[i].nome);
         printf("NOTA: %.2f\n", alunos[i].nota);
+        soma += alunos[i].nota; 
     }
-
+	
+    // 	CALCULA A MEDIA GERAL
+    float media_final = (mx_alunos > 0) ? (soma / mx_alunos) : 0;
+	
+    printf("\nA MÉDIA GERAL DAS NOTAS FOI: %.2f\n", media_final);
+		
     free(alunos); 
+    
     return 0;
 }
